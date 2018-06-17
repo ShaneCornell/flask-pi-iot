@@ -23,8 +23,25 @@
 
 <main-content class="main">
 	<p>
-		Hola Mundo
-		{{data}}
+		Hola Mundo <br>
+		<table border = "1">
+		<tr bgcolor="red">
+			<th>Serial Number</th>
+			<th>Timestamp</th>
+			<th>X</th>
+			<th>Y</th>
+			<th>Z</th>
+		</tr>
+		{% for item in data %}
+			<tr>
+				<td>{{item[0]}} </td>
+				<td>{{item[1]}} </td>
+				<td>{{item[2]}} </td>
+				<td>{{item[3]}} </td>
+				<td>{{item[4]}} </td>
+			</tr>
+		{% endfor %}
+		</table>
 	</p>
 
 </main-content>
