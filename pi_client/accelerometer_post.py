@@ -34,6 +34,8 @@ def get_valid_servers():
             print("Removed{0} ".format(server))
     return sl
 
+
+
 if __name__ == '__main__':
     while True:
         x,y,z=accel.read()

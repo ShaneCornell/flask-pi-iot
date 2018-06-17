@@ -10,6 +10,16 @@ app = Flask(__name__)
 
 aPID = pid.PiIOTData()
 
+@app.route('/all_data.html', methods=['POST', 'GET'])
+def all_data():
+    if request.method == 'GET':
+        print("/all_data")
+       # print(d["serial-no"])
+        d = aPID.get_readings()
+        print(d)
+        return render_template('all_data.html', data = d)
+    return("hola mundo")
+
 @app.route('/test', methods=['POST','GET'])
 def my_test():
     if request.method == 'POST':
@@ -17,11 +27,9 @@ def my_test():
         d = request.form
        # print(d["serial-no"])
         aPID.add_readings(d["serial-no"], d["timestamp"], d["x"], d["y"], d["z"])
-        print(aPID.get_number_of_readings())
+        #print(aPID._readings)
     return("hello")
         #add_readings
-
-
 
 @app.route('/yaml')
 def my_yaml_microservice():
@@ -62,3 +70,4 @@ def david_page():
         print("DavidPi got a post")
         print(request.form)
     return render_template('davidpi.html')
+
