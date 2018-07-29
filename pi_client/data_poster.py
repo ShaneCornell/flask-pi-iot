@@ -1,5 +1,7 @@
 # Import the ADXL345 module.
+
 import Adafruit_ADXL345
+
 import requests
 import time
 import datetime

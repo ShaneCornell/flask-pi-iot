@@ -4,6 +4,8 @@ import requests
 import time
 import datetime
 import random
+import math
+
 
 
 
@@ -16,7 +18,7 @@ class DataPoster():
                      'http://katie-pi-iot.cfapps.io/test',
                     'http://david-pi-iot.cfapps.io/test',
                     'http://jpf-flask-pi-iot.cfapps.io/test',
-                    'http://shane-pi-iot.cfapps.io/test']
+                    'http://shane-flask-pi-iot.cfapps.io/test']
 
     def getserial(self):
         # Extract serial from cpuinfo file
@@ -28,7 +30,7 @@ class DataPoster():
                     cpuserial = line[10:26]
             f.close()
         except:
-            cpuserial = "ERROR000000000"
+            cpuserial = "SHANE000000000"
 
         return cpuserial
 
@@ -64,6 +66,7 @@ class DataPoster():
         self.get_valid_servers(self.get_ServerList())
         n = 0
         for server in self._valid_servers:
+            print('Sending data to sever: {}'.format(server))
             r = requests.post(server, data=aData)
             if r.status_code != 200:
                 print("server: {} returned error code: {}".format(server, r.status_code))
@@ -79,14 +82,34 @@ class DataPoster():
         print('X={0}, Y={1}, Z={2}'.format(x, y, z))
         ts = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         myserial = self.getserial()
-        aData = {'serial-number': myserial, 'timestamp': ts, 'x': x, 'y': y, 'z': z}
+        aData = {'serial-no': myserial, 'timestamp': ts, 'x': x, 'y': y, 'z': z}
         print(aData)
         return aData
 
+
+
 if __name__ == '__main__':
     dP = DataPoster()
+    sL=dP.get_ServerList()
+    print("Initial Server List:{}".format(sL))
+    print("Current Valid Servers:{}".format(dP.get_valid_servers(sL)))
+    n = 0
+    old_time = time.time()
+
     while True:
         aData = dP.get_accelerometer_data()
         dP.post_to_valid_servers(aData)
+        new_time = time.time()
+
+        if 10 == math.floor(new_time - old_time):
+            ts = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+            print('{} Refreshing server list...'.format(ts))
+            sL = dP.get_ServerList()
+            dP.get_valid_servers(sL)
+            print("Currently Valid Servers{}".format(dP._valid_servers))
+            old_time = time.time()
+
+
+
 
         #tbd wrap above in a loop to periodically check for valid servers

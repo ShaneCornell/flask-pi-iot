@@ -2,7 +2,8 @@
 
 import unittest
 import mock_data_poster as mDP
-import time, datetime
+import time
+import datetime
 
 
 class test_accelerometer_post(unittest.TestCase):
