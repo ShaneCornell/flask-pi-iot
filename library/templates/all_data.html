@@ -34,11 +34,11 @@
 		</tr>
 		{% for item in data %}
 			<tr>
-				<td>{{item[0]}} </td>
-				<td>{{item[1]}} </td>
-				<td>{{item[2]}} </td>
-				<td>{{item[3]}} </td>
-				<td>{{item[4]}} </td>
+				<td>{{reading.serial_no}} </td>
+				<td>{{reading.timestamp}} </td>
+				<td>{{reading.x}} </td>
+				<td>{{reading.y}} </td>
+				<td>{{reading.z}} </td>
 			</tr>
 		{% endfor %}
 		</table>

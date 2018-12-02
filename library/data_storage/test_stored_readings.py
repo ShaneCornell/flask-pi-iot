@@ -2,6 +2,7 @@
 import unittest
 import datetime
 import random
+import pandas as pd
 from library.data_storage.stored_reading import StoredReadings
 
 class TestStoredReadings(unittest.TestCase):
@@ -110,6 +111,15 @@ class TestStoredReadings(unittest.TestCase):
 
         self.assertTrue(len(fr) == 12)
         self.assertTrue()
+
+    def test_push_to_s3(self,):
+        # setup a dataframe
+        column_title = ['people', 'places', 'numbers']
+        data = [('david', 'italy', 4), ('megan', 'germany', 5), ('Katie', 'spain', 9), ('shane', 'norway', 3)]
+        df = pd.DataFrame(data, columns=column_title)
+        aSR = StoredReadings()
+
+        aSR.push_to_s3(df)
 
 
 if __name__ == '__main__':

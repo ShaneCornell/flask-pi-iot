@@ -7,6 +7,8 @@ class StoredReadings():
         self.df = []     # Create an empty dataframe
         self.df = pd.DataFrame(columns = ['serial_no', 'timestamp', 'x', 'y', 'z'])
         print(self.df)
+        self.i = 0
+        self.fileNumber = 0 #used for excel writer to increment filename
 
     # Method for adding a reading to the dataframe
     def add_readings(self, serial_no, ts, x, y, z):
@@ -24,24 +26,28 @@ class StoredReadings():
     # have the front end send back the index value out of the original returned dictionary?
     def get_first_reading(self):
         i = 0
-        d = {'index':self.df.index[i], 'serial_no': self.df.serial_no[i], 'timestamp': self.df.timestamp[i], 'x': self.df.x[i], 'y': self.df.y[i],
-             'z': self.df.z[i]}
+        sizeOfDataFrame = self.df.shape[0]
+        if sizeOfDataFrame > 0:
+            d = {'index':self.df.index[self.i], 'serial_no': self.df.serial_no[self.i], 'timestamp': self.df.timestamp[self.i], 'x': self.df.x[self.i], 'y': self.df.y[self.i],
+                 'z': self.df.z[self.i]}
+        else:
+            d = {'serial_no': "None", 'timestamp': "None", 'x': 0, 'y': 0, 'z': 0}
         return d
 
 
     # Next reading will return a dictionary with the next reading
-    def get_next_reading(self, index_no): # Incoming index_no must be an integer
-        index_no = index_no + 1
-        d = {'index': self.df.index[index_no], 'serial_no': self.df.serial_no[index_no], 'timestamp':self.df.timestamp[index_no], 'x': self.df.x[index_no], 'y': self.df.y[index_no],
-             'z': self.df.z[index_no]}
+    def get_next_reading(self): # Incoming index_no must be an integer
+        self.i = self.i + 1
+        d = {'index': self.df.index[self.i], 'serial_no': self.df.serial_no[self.i], 'timestamp':self.df.timestamp[self.i], 'x': self.df.x[self.i], 'y': self.df.y[self.i],
+             'z': self.df.z[self.i]}
         return d
 
 
     # Previous reading will return a dictionary with the previous reading
-    def get_previous_reading(self, index_no):
-        index_no = index_no - 1
-        d = {'index': self.df.index[index_no], 'serial_no': self.df.serial_no[index_no], 'timestamp':self.df.timestamp[index_no], 'x': self.df.x[index_no], 'y': self.df.y[index_no],
-             'z': self.df.z[index_no]}
+    def get_previous_reading(self):
+        self.i = self.i - 1
+        d = {'index': self.df.index[self.i], 'serial_no': self.df.serial_no[self.i], 'timestamp':self.df.timestamp[self.i], 'x': self.df.x[self.i], 'y': self.df.y[self.i],
+             'z': self.df.z[self.i]}
         return d
 
 
@@ -50,3 +56,19 @@ class StoredReadings():
     def time_selection(self, start_time, end_time):
         for row in self.df.iterrows():
             if df['timestamp'].between(start_time, end_time, inclusive = true) is True
+
+
+    def readings_saver(self):
+        n = self.get_number_of_readings()
+        if n >= 1000:
+            self.fileNumber = self.fileNumber + 1
+            filename = 'Saved_Readings_' + str(self.fileNumber) + '.xlsx'
+            print('Saving the last 1000 readings to {}'.format(filename))
+            writer = pd.ExcelWriter(filename, engine='xlsxwriter')
+            self.df.to_excel(writer, sheet_name='accelData')
+            writer.save()
+            self.df = []
+            self.df = pd.DataFrame(columns=['serial_no', 'timestamp', 'x', 'y', 'z'])
+
+    #when a specified number of readings are sent to server create csv and save in s3 bucket
+    def push_to_s3(self, df):

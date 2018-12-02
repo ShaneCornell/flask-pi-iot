@@ -6,6 +6,6 @@ if __name__ == '__main__':
 #    host = os.environ.get('IP','127.0.0.1')
 #    host = os.environ.get('IP','10.10.10.14')
     #host = os.environ.get('IP','0.0.0.0') #cloud foundry uses 0.0.0.0 to listen to all IPs
-    host = os.environ.get('IP', '127.0.0.10') #locap IP for test
+    host = os.environ.get('IP', '0.0.0.0') #locap IP for test
     port = int( os.environ.get('Port',8080))
     app.run(host=host, port=port)

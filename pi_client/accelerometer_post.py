@@ -34,14 +34,12 @@ def get_valid_servers():
             print("Removed{0} ".format(server))
     return sl
 
-
-
 if __name__ == '__main__':
     while True:
         x,y,z=accel.read()
         print('X={0}, Y={1}, Z={2}'.format(x, y, z))
         ts=datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         serial=getserial()
-        aData={'serial-number':serial,'timestamp':ts,'x':x,'y':y,'z':z}
+        aData={'serial-no':serial,'timestamp':ts,'x':x,'y':y,'z':z}
         print(aData)
         r=requests.post('https://katie-pi-iot.cfapps.io/',data=aData)
