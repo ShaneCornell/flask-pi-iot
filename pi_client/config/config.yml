@@ -1,0 +1,9 @@
+serverList:
+    - http://megan-pi-iot.cfapps.io
+    - http://katie-pi-iot.cfapps.io
+    - http://david-pi-iot.cfapps.io
+    - http://jpf-flask-pi-iot.cfapps.io
+    - http://shane-pi-iot.cfapps.io
+    - http://10.0.0.64:8080
+    - http://10.0.0.64:8080
+
