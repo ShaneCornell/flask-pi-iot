@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>AllData</title>
+<title>All Data</title>
 <!--<link href="piled.css" rel="stylesheet" type="text/css">-->
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/piled.css') }}">
 </head>
@@ -13,7 +13,7 @@
 <header class="header">All Accelerometer Data
 <ul class="navigation">
 		<li><a href="index.html">Home</a></li>
-     	<li><a href="all_data.html">All Data</a></li>
+		<li><a href="alldata.html">All Data</a></li>
 		<li><a href="meganpi.html">Megan</a></li>
 		<li><a href="johnpi.html">John</a></li>
 		<li><a href="katiepi.html">Katie</a></li>
@@ -21,34 +21,32 @@
 </ul>
 </header>
 
-<main-content class="main">
-	<p>
-		Hola Mundo <br>
-		<table border = "1">
-		<tr bgcolor="red">
-			<th>Serial Number</th>
-			<th>Timestamp</th>
-			<th>X</th>
-			<th>Y</th>
-			<th>Z</th>
-		</tr>
-		{% for item in data %}
-			<tr>
-				<td>{{reading.serial_no}} </td>
-				<td>{{reading.timestamp}} </td>
-				<td>{{reading.x}} </td>
-				<td>{{reading.y}} </td>
-				<td>{{reading.z}} </td>
-			</tr>
-		{% endfor %}
-		</table>
-	</p>
-
+    <main-content class="main">
+        <p>
+           Total number of readings is: {{data.__len__()}}
+            <table border="1" width="100%">
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Timestamp</th>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>Z</th>
+                </tr>
+            {% for reading in data %}
+                <tr>
+                    <td>{{reading.serial_no}}</td>
+                    <td>{{reading.timestamp}}</td>
+                    <td>{{reading.x}}</td>
+                    <td>{{reading.y}}</td>
+                    <td>{{reading.z}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </p>
 </main-content>
 
-
-<footer class="footer">Footer</footer>
-</page>
+<br>
+<br>
 
 </body>
 </html>

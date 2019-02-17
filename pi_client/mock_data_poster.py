@@ -38,7 +38,7 @@ class DataPoster():
                     cpuserial = line[10:26]
             f.close()
         except:
-            cpuserial = "KATIE000000000"
+            cpuserial = "SHANE000000000"
 
         return cpuserial
 
@@ -47,7 +47,7 @@ class DataPoster():
 
     def get_valid_servers(self, sl):
         self._validServers = []
-        print("In get_valid_servers() server list passed to us is {}" .format(sl))
+        # print("In get_valid_servers() server list passed to us is {}" .format(sl))
         for server in sl:
             url_to_send_to = server + "/index.html"
             r = requests.get(url_to_send_to)
@@ -88,7 +88,7 @@ class DataPoster():
         print('X={0}, Y={1}, Z={2}'.format(x, y, z))
         ts = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         myserial = self.getserial()
-        aData = {'serial-no': myserial, 'timestamp': ts, 'x': x, 'y': y, 'z': z}
+        aData = {'serial_no': myserial, 'timestamp': ts, 'x': x, 'y': y, 'z': z}
         return (aData)
 
 
@@ -101,6 +101,7 @@ if __name__ == '__main__':
 
     while True:
         reading = dP.get_aData()
+        #print (reading)
         newx = reading["x"]
         newy = reading["y"]
         newz = reading["z"]
@@ -116,6 +117,7 @@ if __name__ == '__main__':
             postit = True
 
         if(postit==True):
+           print(reading)
            dP.post_to_valid_servers(reading)
            oldx = newx
            oldy = newy
